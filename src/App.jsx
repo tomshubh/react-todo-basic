@@ -1,18 +1,14 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
+
   const [text, setText] = useState("");
 
-  // Load todos from localStorage
-  useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem("todos"));
-    if (savedTodos) {
-      setTodos(savedTodos);
-    }
-  }, []);
-
-  // Save todos to localStorage
+  // Save todos to localStorage whenever todos change
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
